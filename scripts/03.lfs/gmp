@@ -11,7 +11,7 @@ function config_pkg() {
 }
 
 function build_pkg() {
-    [ make -j8 && make html ] && return 0 || return 1
+    make -j8 && make html && return 0 || return 1
 }
 
 function check_pkg() {
@@ -20,5 +20,5 @@ function check_pkg() {
 }
 
 function install_pkg() {
-    [ make install && make install-html ] && return 0 || return 1
+    make install && make install-html && return 0 || return 1
 }
