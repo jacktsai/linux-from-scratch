@@ -1,0 +1,27 @@
+#!/bin/bash
+function tar_name() { echo 'automake-1.15.tar.xz'; }
+function tar_dir() { echo 'automake-1.15'; }
+
+function config_pkg() {
+    sed -i 's:/\\\${:/\\\$\\{:' bin/automake.in \
+    && ./configure \
+        --prefix=/usr \
+        --docdir=/usr/share/doc/automake-1.15 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    sed -i "s:./configure:LEXLIB=/usr/lib/libfl.a &:" t/lex-{clean,depend}-cxx.sh \
+    && make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}
