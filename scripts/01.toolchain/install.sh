@@ -22,51 +22,54 @@ SRC_DIR='/tools/src'
 WORK_DIR='/tmp/build'
 PKG_NAME=$(tar_name)
 PKG_DIR=$(tar_dir)
-CHECK_PKG=1
+CHECK_PKG=0
 
-args=`getopt -l without-check -- "$@"`
-while true; do
-    case $1 in
-        --without-check)
-            CHECK_PKG=0
-            shift;;
-    esac
-done
+# args=`getopt -l without-check -- "$@"`
+# while true; do
+#     case $1 in
+#         --without-check)
+#             CHECK_PKG=0
+#             shift;;
+#     esac
+# done
 
-config_pkg
-[ $? -eq 0 ] && {
-    echo config ok
-    build_pkg
+function install() {
+    cd $WORK_DIR
+    rm -rf $PKG_DIR
+    tar xf $SRC_DIR/$PKG_NAME
+    cd $PKG_DIR
+
+    config_pkg
     [ $? -eq 0 ] && {
-        echo build ok
-echo CHECK_PKG = $CHECK_PKG
-        CHECK_RESULT=0
-        if [[ CHECK_PKG -eq 1 ]]; then
-            check_pkg
-            CHECK_RESULT=$?
-        fi
-echo CHECK_RESULT = $CHECK_RESULT
-        [[ CHECK_RESULT -eq '0' ]] && {
-            echo check ok
-            install_pkg
-            [ $? -eq 0 ] && {
-                echo install ok
+        echo "[[[ config ok ]]]"
+        build_pkg
+        [ $? -eq 0 ] && {
+            echo "[[[ build ok ]]]"
+            CHECK_RESULT=0
+            if [[ CHECK_PKG -eq 1 ]]; then
+                check_pkg
+                [ $? -eq 0 ] && echo check ok || echo check fail
+                CHECK_RESULT=$?
+            else
+                echo "[[[ check skipped ]]]"
+            fi
+
+            [[ CHECK_RESULT -eq '0' ]] && {
+                install_pkg
+                [ $? -eq 0 ] && {
+                    echo "[[[ install ok ]]]"
+                } || {
+                    echo "[[[ install fail ]]]"
+                }
             } || {
-                echo install fail
+                echo "[[[ check fail ]]]"
             }
         } || {
-            echo check fail
+            echo "[[[ build fail ]]]"
         }
     } || {
-        echo build fail
+        echo "[[[ config fail ]]]"
     }
-} || {
-    echo config fail
 }
 
-function process() {
-    cd /tmp/build
-    rm -rf $PKG_DIR
-    tar xf /tools/src/$PKG_NAME
-    cd $PKG_DIR
-}
+time { install > /tmp/build/lastbuild.log; }
