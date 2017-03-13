@@ -1,12 +1,12 @@
 #!/bin/bash
 if [ -e /etc/lfs-release ]; then
-    [ $(id -u) -ne 0 ] && {
-        echo "在 LFS 環境請使用 root 使用者執行."
+    [ $(id -un) != 'root' ] && {
+        echo '在 LFS 環境請使用 root 使用者執行.'
         exit 1
     }
 else
-    [ $(id -u) -eq 0 ] && {
-        echo "在非 LFS 環境請勿使用 root 使用者執行."
+    [ $(id -un) != 'lfs' ] && {
+        echo '在非 LFS 環境請使用 lfs 使用者執行.'
         exit 1
     }
 fi
@@ -118,6 +118,6 @@ function print_result() {
 time {
     install > /tmp/build/lastbuild.log 2>&1 \
     && {
-        print_result || tail -n 5 /tmp/build/lastbuild.log
-    } || tail -n 5 /tmp/build/lastbuild.log
+        print_result || tail -n 10 /tmp/build/lastbuild.log
+    } || tail /tmp/build/lastbuild.log
 }

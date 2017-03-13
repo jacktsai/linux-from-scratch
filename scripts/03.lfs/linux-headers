@@ -1,0 +1,23 @@
+#!/bin/bash
+function tar_name() { echo 'linux-4.9.9.tar.xz'; }
+function tar_dir() { echo 'linux-4.9.9'; }
+
+function config_pkg() {
+    return 0
+}
+
+function make_pkg() {
+    make mrproper \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make INSTALL_HDR_PATH=dest headers_install \
+    && find dest/include \( -name .install -o -name ..install.cmd \) -delete \
+    && cp -r dest/include/* /usr/include \
+    && return 0 || return 1
+}
