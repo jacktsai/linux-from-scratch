@@ -84,26 +84,36 @@ function install() {
 }
 
 time {
-    install > /tmp/build/lastbuild.log \
-    && {
-        case $CONFIG_RESULT in
-            0) echo "CONFIG: Succeed";;
-            1) echo "CONFIG: FAIL";;
-        esac
-        case $MAKE_RESULT in
-            0) echo "MAKE: Succeed";;
-            1) echo "MAKE: FAIL";;
-        esac
-        case $CHECK_RESULT in
-            0) echo "CHECK: Succeed";;
-            1) echo "CHECK: FAIL";;
-            2) echo "CHECK: skipped";;
-        esac
-        case $INSTALL_RESULT in
-            0) echo "INSTALL: Succeed";;
-            1) echo "INSTALL: FAIL";;
-        esac
-    } || cat /tmp/build/lastbuild.log
+    install > /tmp/build/lastbuild.log 2>&1 \
+    && || tail -n 5 /tmp/build/lastbuild.log
 }
 
-$INSTALL_RESULT && exit 0 || exit 1
+case $CONFIG_RESULT in
+    0) echo "CONFIG: Succeed"
+        case $MAKE_RESULT in
+            0) echo "MAKE: Succeed"
+                case $CHECK_RESULT in
+                    0) echo "CHECK: Succeed";;
+                    1) echo "CHECK: FAIL"
+                        exi 3
+                        ;;
+                    2) echo "CHECK: skipped";;
+                esac
+                case $INSTALL_RESULT in
+                    0) echo "INSTALL: Succeed"
+                        exit 0
+                        ;;
+                    1) echo "INSTALL: FAIL"
+                        exit 4
+                        ;;
+                esac
+                ;;
+            1) echo "MAKE: FAIL"
+                exit 2
+                ;;
+        esac
+        ;;
+    1) echo "CONFIG: FAIL"
+        exit 1
+        ;;
+esac
