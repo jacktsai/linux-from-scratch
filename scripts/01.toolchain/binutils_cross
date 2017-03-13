@@ -14,9 +14,8 @@ function config_pkg() {
 }
 
 function build_pkg() {
-    # make -j8
-    # return $?
-    return 0
+    make -j8
+    return $?
 }
 
 function check_pkg() {
@@ -24,8 +23,7 @@ function check_pkg() {
 }
 
 function install_pkg() {
-    # mkdir /tools/lib && ln -s lib /tools/lib64
-    # make install
-    # return $?
-    return 0
+    mkdir /tools/lib && ln -s lib /tools/lib64
+    make install
+    return $?
 }
