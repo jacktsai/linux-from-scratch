@@ -9,13 +9,13 @@ function config_pkg() {
         --with-lib-path=/tools/lib \
         --target=$LFS_TGT          \
         --disable-nls              \
-        --disable-werror
-    return $?
+        --disable-werror           \
+    && return 0 || return 1
 }
 
 function build_pkg() {
-    make -j8
-    return $?
+    make -j8 \
+    && return 0 || return 1
 }
 
 function check_pkg() {
@@ -24,6 +24,6 @@ function check_pkg() {
 
 function install_pkg() {
     mkdir /tools/lib && ln -s lib /tools/lib64
-    make install
-    return $?
+    make install \
+    && return 0 || return 1
 }

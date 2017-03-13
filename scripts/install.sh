@@ -46,8 +46,7 @@ function install() {
     tar xf $SRC_DIR/$PKG_NAME
     cd $PKG_DIR
 
-    config_pkg
-    [ $? -eq 0 ] && {
+    config_pkg && {
         echo "[[[ config ok ]]]"
         build_pkg
         [ $? -eq 0 ] && {
@@ -55,7 +54,7 @@ function install() {
             CHECK_RESULT=0
             if [[ CHECK_PKG -eq 1 ]]; then
                 check_pkg
-                [ $? -eq 0 ] && echo check ok || echo check fail
+                [ $? -eq 0 ] && echo "[[[ check ok ]]]" || echo "[[[ check fail ]]]"
                 CHECK_RESULT=$?
             else
                 echo "[[[ check skipped ]]]"
@@ -68,8 +67,6 @@ function install() {
                 } || {
                     echo "[[[ install fail ]]]"
                 }
-            } || {
-                echo "[[[ check fail ]]]"
             }
         } || {
             echo "[[[ build fail ]]]"
@@ -79,4 +76,7 @@ function install() {
     }
 }
 
-time { install > /tmp/build/lastbuild.log; }
+time {
+    install > /tmp/build/lastbuild.log
+
+}

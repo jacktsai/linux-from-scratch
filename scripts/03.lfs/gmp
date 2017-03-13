@@ -6,19 +6,22 @@ function config_pkg() {
     ./configure --prefix=/usr    \
             --enable-cxx         \
             --disable-static     \
-            --docdir=/usr/share/doc/gmp-6.1.2
-    return $?
+            --docdir=/usr/share/doc/gmp-6.1.2 \
+    && return 0 || return 1
 }
 
 function build_pkg() {
-    make -j8 && make html && return 0 || return 1
+    make -j8 && make html \
+    && return 0 || return 1
 }
 
 function check_pkg() {
-    make check
-    return $?
+    make check \
+    && return 0 || return 1
 }
 
 function install_pkg() {
-    make install && make install-html && return 0 || return 1
+    make install \
+    && make install-html \
+    && return 0 || return 1
 }
