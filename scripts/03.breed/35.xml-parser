@@ -1,0 +1,18 @@
+#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf XML-Parser-2.44
+tar -xf /tools/src/XML-Parser-2.44.tar.gz
+cd XML-Parser-2.44
+
+perl Makefile.PL \
+    && make -j8 \
+    && make install
+}
+
+time { build > /tmp/build/lastbuild.log; }

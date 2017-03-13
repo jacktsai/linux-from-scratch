@@ -1,0 +1,19 @@
+#!/bin/bash
+[ $(id -u) -eq 0 ] && {
+    echo "請不要使用 root 執行."
+    exit 1
+}
+
+cd /tools/work
+rm -rf openssl-1.1.0e
+tar -xf ../src/openssl-1.1.0e.tar.gz
+cd openssl-1.1.0e
+
+function build() {
+./config --prefix=/tools \
+    > /dev/null \
+    && make > /dev/null \
+    && make install > /dev/null
+}
+
+time build

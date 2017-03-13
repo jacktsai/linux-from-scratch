@@ -1,0 +1,19 @@
+#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf linux-4.9.9
+tar -xf /tools/src/linux-4.9.9.tar.xz
+cd linux-4.9.9
+
+make mrproper \
+    && make INSTALL_HDR_PATH=dest headers_install \
+    && find dest/include \( -name .install -o -name ..install.cmd \) -delete \
+    && cp -r dest/include/* /usr/include
+}
+
+time { build > /tmp/build/lastbuild.log; }

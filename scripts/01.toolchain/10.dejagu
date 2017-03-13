@@ -1,0 +1,19 @@
+#!/bin/bash
+[ $(id -u) -eq 0 ] && {
+    echo "請不要使用 root 執行."
+    exit 1
+}
+
+cd /tools/work
+rm -rf dejagnu-1.6
+tar -xf ../src/dejagnu-1.6.tar.gz
+cd dejagnu-1.6
+
+function build() {
+./configure --prefix=/tools \
+    > /dev/null \
+    && make install > /dev/null \
+    && make check
+}
+
+time build

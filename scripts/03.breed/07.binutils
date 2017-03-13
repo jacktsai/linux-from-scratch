@@ -1,0 +1,27 @@
+#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf binutils-2.27
+tar -xf /tools/src/binutils-2.27.tar.bz2
+mkdir binutils-2.27/build
+cd binutils-2.27/build
+
+../configure --prefix=/usr       \
+             --enable-gold       \
+             --enable-ld=default \
+             --enable-plugins    \
+             --enable-shared     \
+             --disable-werror    \
+             --with-system-zlib  \
+    \
+    && make tooldir=/usr -j8 \
+    && make -k check \
+    && make tooldir=/usr install
+}
+
+time { build > /tmp/build/lastbuild.log; }

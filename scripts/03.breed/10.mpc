@@ -1,0 +1,24 @@
+#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf mpc-1.0.3
+tar -xf /tools/src/mpc-1.0.3.tar.gz
+cd mpc-1.0.3
+
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/mpc-1.0.3 \
+    \
+    && make -j8 \
+    && make html \
+    && make check \
+    && make install \
+    && make install-html
+}
+
+time { build > /tmp/build/lastbuild.log; }

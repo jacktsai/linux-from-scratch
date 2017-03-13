@@ -1,0 +1,23 @@
+#!/bin/bash
+[ $(id -u) -eq 0 ] && {
+    echo "請不要使用 root 執行."
+    exit 1
+}
+
+cd /tools/work
+rm -rf openssh-7.3p1
+tar -xf ../src/openssh-7.3p1.tar.gz
+cd openssh-7.3p1
+
+function build() {
+./configure \
+    --prefix=/tools \
+    --sysconfdir=/tools/etc/ssh \
+    --without-lastlog \
+    --with-default-path=/tools/bin:/tools/sbin:/bin:/sbin:/usr/bini:/usr/sbin \
+    > /dev/null \
+    && make > /dev/null \
+    && make install > /dev/null
+}
+
+time build

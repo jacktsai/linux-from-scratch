@@ -1,0 +1,32 @@
+#!/bin/bash
+[ -e /etc/lfs-release ] && {
+    echo 請勿在 LFS 環境執行!
+    exit 0
+}
+[ $# -lt 3 ] && {
+    echo "使用方式: $(basename $0) <tarball路徑> <解壓目錄> <要產生的腳本名稱>"
+    exit 1
+}
+
+echo "#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf $2
+tar -xf /tools/src/$1
+cd $2
+
+./configure \\
+    --prefix=/usr \\
+    && make -j8 \\
+    && make check \\
+    && make install
+}
+
+time { build > /tmp/build/lastbuild.log; }" > $3
+
+chmod u=rwx,g=,o= $3

@@ -1,0 +1,25 @@
+#!/bin/bash
+[ ! -e /etc/lfs-release ] && {
+    echo 請在 LFS 環境執行!
+    exit 0
+}
+
+function build() {
+cd /tmp/build
+rm -rf mpfr-3.1.5
+tar -xf /tools/src/mpfr-3.1.5.tar.xz
+cd mpfr-3.1.5
+
+./configure --prefix=/usr        \
+            --disable-static     \
+            --enable-thread-safe \
+            --docdir=/usr/share/doc/mpfr-3.1.5 \
+    \
+    && make -j8 \
+    && make html \
+    && make check \
+    && make install \
+    && make install-html
+}
+
+time { build > /tmp/build/lastbuild.log; }
