@@ -1,6 +1,27 @@
+#!/bin/bash
 
+function tar_name() { echo 'binutils-2.27.tar.bz2'; }
+function tar_dir() { echo 'binutils-2.27'; }
 
-function binutils-cross() {
+function config_pkg() {
+    return 0
+}
+
+function build_pkg() {
+    return 0
+}
+
+function check_pkg() {
+    return 1
+
+}
+
+function install_pkg() {
+    return 0
+
+}
+
+function binutils_cross() {
 
 PACKAGE_NAME='binutils-2.27.tar.bz2'
 FOLDER_NAME='binutils-2.27'
