@@ -85,7 +85,7 @@ function install() {
 
 time {
     install > /tmp/build/lastbuild.log 2>&1 \
-    && || tail -n 5 /tmp/build/lastbuild.log
+    || tail -n 5 /tmp/build/lastbuild.log
 }
 
 case $CONFIG_RESULT in
