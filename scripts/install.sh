@@ -30,6 +30,10 @@ WORK_DIR='/tmp/build'
 PKG_NAME=$(tar_name)
 PKG_DIR=$(tar_dir)
 CHECK_PKG=0
+CONFIG_RESULT=-1
+MAKE_RESULT=-1
+CHECK_RESULT=-1
+INSTALL_RESULT=-1
 
 # args=`getopt -l without-check -- "$@"`
 # while true; do
@@ -41,15 +45,31 @@ CHECK_PKG=0
 # done
 
 function install() {
+    [ ! -e $WORK_DIR ] && {
+        printf 'WORK_DIR "%s" Not Found !!\n' $WORK_DIR
+        return 1
+    }
+
     cd $WORK_DIR
-    rm -rf $PKG_DIR
-    tar xf $SRC_DIR/$PKG_NAME
-    cd $PKG_DIR
+    [ -e $PKG_DIR ] && rm -rf $PKG_DIR
+
+    if [ -e $SRC_DIR/$PKG_NAME ]; then
+        tar xf $SRC_DIR/$PKG_NAME
+    else
+        printf 'Package "%s" Not Found !!\n' $SRC_DIR/$PKG_NAME
+        return 1
+    fi
+
+    [ -e $PKG_DIR ] && cd $PKG_DIR || {
+        printf 'Directory "%s" Not Found !!\n' $PKG_DIR
+        return 1
+    }
 
     config_pkg && {
-        echo "[[[ config ok ]]]"
-        build_pkg && {
-            echo "[[[ build ok ]]]"
+        CONFIG_RESULT=0
+        make_pkg && {
+            MAKE_RESULT=0
+
             if [ $CHECK_PKG -eq 1 ]; then
                 check_pkg && CHECK_RESULT=0 || CHECK_RESULT=1
             else
@@ -57,25 +77,31 @@ function install() {
             fi
 
             [ $CHECK_RESULT -ne 1 ] && {
-                install_pkg && {
-                    echo "[[[ install ok ]]]"
-                } || {
-                    echo "[[[ install fail ]]]"
-                }
+                install_pkg && INSTALL_RESULT=0 || INSTALL_RESULT=1
             }
-        } || {
-            echo "[[[ build fail ]]]"
-        }
-    } || {
-        echo "[[[ config fail ]]]"
-    }
+        } || MAKE_RESULT=1
+    } || CONFIG_RESULT=1
 }
 
 time {
-    install > /tmp/build/lastbuild.log
-    case $CHECK_RESULT in
-        1) echo "[[[ check fail ]]]";;
-        2) echo "[[[ check skipped ]]]";;
-    esac
-echo "[[[ check ok ]]]" || echo "[[[ check fail ]]]"
+    install > /tmp/build/lastbuild.log \
+    && {
+        case $CONFIG_RESULT in
+            0) echo "CONFIG: Pass";;
+            1) echo "CONFIG: FAIL";;
+        esac
+        case $MAKE_RESULT in
+            0) echo "MAKE: Pass";;
+            1) echo "MAKE: FAIL";;
+        esac
+        case $CHECK_RESULT in
+            0) echo "CHECK: Pass";;
+            1) echo "CHECK: FAIL";;
+            2) echo "CHECK: skipped";;
+        esac
+        case $INSTALL_RESULT in
+            0) echo "INSTALL: Pass";;
+            1) echo "INSTALL: FAIL";;
+        esac
+    } || cat /tmp/build/lastbuild.log
 }

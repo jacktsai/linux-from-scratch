@@ -10,7 +10,7 @@ function config_pkg() {
     && return 0 || return 1
 }
 
-function build_pkg() {
+function make_pkg() {
     make -j8 && make html \
     && return 0 || return 1
 }
