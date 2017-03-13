@@ -87,21 +87,23 @@ time {
     install > /tmp/build/lastbuild.log \
     && {
         case $CONFIG_RESULT in
-            0) echo "CONFIG: Pass";;
+            0) echo "CONFIG: Succeed";;
             1) echo "CONFIG: FAIL";;
         esac
         case $MAKE_RESULT in
-            0) echo "MAKE: Pass";;
+            0) echo "MAKE: Succeed";;
             1) echo "MAKE: FAIL";;
         esac
         case $CHECK_RESULT in
-            0) echo "CHECK: Pass";;
+            0) echo "CHECK: Succeed";;
             1) echo "CHECK: FAIL";;
             2) echo "CHECK: skipped";;
         esac
         case $INSTALL_RESULT in
-            0) echo "INSTALL: Pass";;
+            0) echo "INSTALL: Succeed";;
             1) echo "INSTALL: FAIL";;
         esac
     } || cat /tmp/build/lastbuild.log
 }
+
+$INSTALL_RESULT && exit 0 || exit 1
