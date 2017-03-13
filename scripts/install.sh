@@ -48,21 +48,16 @@ function install() {
 
     config_pkg && {
         echo "[[[ config ok ]]]"
-        build_pkg
-        [ $? -eq 0 ] && {
+        build_pkg && {
             echo "[[[ build ok ]]]"
-            CHECK_RESULT=0
-            if [[ CHECK_PKG -eq 1 ]]; then
-                check_pkg
-                [ $? -eq 0 ] && echo "[[[ check ok ]]]" || echo "[[[ check fail ]]]"
-                CHECK_RESULT=$?
+            if [ $CHECK_PKG -eq 1 ]; then
+                check_pkg && CHECK_RESULT=0 || CHECK_RESULT=1
             else
-                echo "[[[ check skipped ]]]"
+                CHECK_RESULT=2
             fi
 
-            [[ CHECK_RESULT -eq '0' ]] && {
-                install_pkg
-                [ $? -eq 0 ] && {
+            [ $CHECK_RESULT -ne 1 ] && {
+                install_pkg && {
                     echo "[[[ install ok ]]]"
                 } || {
                     echo "[[[ install fail ]]]"
@@ -78,5 +73,9 @@ function install() {
 
 time {
     install > /tmp/build/lastbuild.log
-
+    case $CHECK_RESULT in
+        1) echo "[[[ check fail ]]]";;
+        2) echo "[[[ check skipped ]]]";;
+    esac
+echo "[[[ check ok ]]]" || echo "[[[ check fail ]]]"
 }
