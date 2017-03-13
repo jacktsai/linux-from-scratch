@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function tar_name() { echo 'binutils-2.27.tar.bz2'; }
 function tar_dir() { echo 'binutils-2.27'; }
 
@@ -15,30 +14,18 @@ function config_pkg() {
 }
 
 function build_pkg() {
+    # make -j8
+    # return $?
     return 0
 }
 
 function check_pkg() {
-    return 1
-
+    return 0
 }
 
 function install_pkg() {
+    # mkdir /tools/lib && ln -s lib /tools/lib64
+    # make install
+    # return $?
     return 0
-
-}
-
-function binutils_cross() {
-
-PACKAGE_NAME='binutils-2.27.tar.bz2'
-FOLDER_NAME='binutils-2.27'
-
-cd /tools/work
-rm -rf binutils-2.27
-tar -xf ../src/binutils-2.27.tar.bz2
-cd binutils-2.27
-
-    && make > /dev/null        \
-    && mkdir /tools/lib && ln -s lib /tools/lib64 \
-    && make install > /dev/null
 }
