@@ -83,37 +83,41 @@ function install() {
     } || CONFIG_RESULT=1
 }
 
-time {
-    install > /tmp/build/lastbuild.log 2>&1 \
-    || tail -n 5 /tmp/build/lastbuild.log
+function print_result() {
+    case $CONFIG_RESULT in
+        0) echo "CONFIG: Succeed"
+            case $MAKE_RESULT in
+                0) echo "MAKE: Succeed"
+                    case $CHECK_RESULT in
+                        0) echo "CHECK: Succeed";;
+                        1) echo "CHECK: FAIL"
+                            return 3
+                            ;;
+                        2) echo "CHECK: skipped";;
+                    esac
+                    case $INSTALL_RESULT in
+                        0) echo "INSTALL: Succeed"
+                            return 0
+                            ;;
+                        1) echo "INSTALL: FAIL"
+                            return 4
+                            ;;
+                    esac
+                    ;;
+                1) echo "MAKE: FAIL"
+                    return 2
+                    ;;
+            esac
+            ;;
+        1) echo "CONFIG: FAIL"
+            return 1
+            ;;
+    esac
 }
 
-case $CONFIG_RESULT in
-    0) echo "CONFIG: Succeed"
-        case $MAKE_RESULT in
-            0) echo "MAKE: Succeed"
-                case $CHECK_RESULT in
-                    0) echo "CHECK: Succeed";;
-                    1) echo "CHECK: FAIL"
-                        exi 3
-                        ;;
-                    2) echo "CHECK: skipped";;
-                esac
-                case $INSTALL_RESULT in
-                    0) echo "INSTALL: Succeed"
-                        exit 0
-                        ;;
-                    1) echo "INSTALL: FAIL"
-                        exit 4
-                        ;;
-                esac
-                ;;
-            1) echo "MAKE: FAIL"
-                exit 2
-                ;;
-        esac
-        ;;
-    1) echo "CONFIG: FAIL"
-        exit 1
-        ;;
-esac
+time {
+    install > /tmp/build/lastbuild.log 2>&1 \
+    && {
+        print_result || tail -n 5 /tmp/build/lastbuild.log
+    } || tail -n 5 /tmp/build/lastbuild.log
+}
