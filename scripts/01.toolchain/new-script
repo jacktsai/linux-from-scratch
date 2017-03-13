@@ -22,7 +22,7 @@ cd $2
     && make install > /dev/null
 }
 
-time { build > /tmp/build/lastbuild.log; }" > $3
+time build" > $3
 
 chown root:lfs $3
 chmod g+x,o-r $3
