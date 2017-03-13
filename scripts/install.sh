@@ -1,8 +1,15 @@
 #!/bin/bash
-[ $(id -u) -eq 0 ] && {
-    echo "請不要使用 root 執行."
-    exit 1
-}
+if [ -e /etc/lfs-release ]; then
+    [ $(id -u) -ne 0 ] && {
+        echo "在 LFS 環境請使用 root 使用者執行."
+        exit 1
+    }
+else
+    [ $(id -u) -eq 0 ] && {
+        echo "在非 LFS 環境請使用 lfs 使用者執行."
+        exit 1
+    }
+fi
 
 [ $# -lt 1 ] && {
     printf 'Usage: %s [module name]\n' $(basename $0)
