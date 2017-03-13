@@ -1,0 +1,24 @@
+#!/bin/bash
+function tar_name() { echo 'gmp-6.1.2.tar.xz'; }
+function tar_dir() { echo 'gmp-6.1.2'; }
+
+function config_pkg() {
+    ./configure --prefix=/usr    \
+            --enable-cxx         \
+            --disable-static     \
+            --docdir=/usr/share/doc/gmp-6.1.2
+    return $?
+}
+
+function build_pkg() {
+    [ make -j8 && make html ] && return 0 || return 1
+}
+
+function check_pkg() {
+    make check
+    return $?
+}
+
+function install_pkg() {
+    [ make install && make install-html ] && return 0 || return 1
+}

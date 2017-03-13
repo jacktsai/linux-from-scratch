@@ -6,7 +6,7 @@ if [ -e /etc/lfs-release ]; then
     }
 else
     [ $(id -u) -eq 0 ] && {
-        echo "在非 LFS 環境請使用 lfs 使用者執行."
+        echo "在非 LFS 環境請勿使用 root 使用者執行."
         exit 1
     }
 fi
