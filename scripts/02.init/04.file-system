@@ -12,17 +12,17 @@ mkdir /lib64
 mkdir -p /var/{opt,cache,lib/{color,misc,locate},local,log,mail,spool}
 install -d -m 0750 /root
 install -d -m 1777 /tmp /var/tmp
-ln -sv /run /var/run
-ln -sv /run/lock /var/lock
-ln -sv /proc/self/mounts /etc/mtab
-ln -sv /tools/bin/{bash,cat,echo,pwd,stty} /bin
-ln -sv /tools/bin/perl /usr/bin
-ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
-ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib
+ln -s /run /var/run
+ln -s /run/lock /var/lock
+ln -s /proc/self/mounts /etc/mtab
+ln -s /tools/bin/{bash,cat,echo,pwd,stty} /bin
+ln -s /tools/bin/perl /usr/bin
+ln -s /tools/lib/libgcc_s.so{,.1} /usr/lib
+ln -s /tools/lib/libstdc++.so{,.6} /usr/lib
 sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la
-ln -sv bash /bin/sh
-ln -sv /proc/self/mounts /etc/mtab
-ln -sv /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+ln -s bash /bin/sh
+ln -s /proc/self/mounts /etc/mtab
+ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 echo "Asia/Taipei" > /etc/timezone
 
 echo "root:x:0:0:root:/root:/bin/bash
@@ -72,7 +72,7 @@ nogroup:x:99:
 users:x:999:" > /etc/group
 
 touch /var/log/{btmp,lastlog,faillog,wtmp}
-chgrp -v utmp /var/log/lastlog
-chmod -v 664  /var/log/lastlog
-chmod -v 600  /var/log/btmp
+chgrp utmp /var/log/lastlog
+chmod 664  /var/log/lastlog
+chmod 600  /var/log/btmp
 
