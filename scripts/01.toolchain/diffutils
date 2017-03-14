@@ -1,9 +1,9 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'diffutils-3.5.tar.xz'; }
+function tar_dir() { echo 'diffutils-3.5'; }
 
 function config_pkg() {
-    ./configure \
+    ./configure --prefix=/tools \
     && return 0 || return 1
 }
 

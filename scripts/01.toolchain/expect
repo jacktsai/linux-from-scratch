@@ -1,0 +1,28 @@
+#!/bin/bash
+function tar_name() { echo 'expect5.45.tar.gz'; }
+function tar_dir() { echo 'expect5.45'; }
+
+function config_pkg() {
+    cp configure{,.orig}
+    sed 's:/usr/local/bin:/bin:' configure.orig > configure
+    ./configure \
+        --prefix=/tools       \
+        --with-tcl=/tools/lib \
+        --with-tclinclude=/tools/include \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make test \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make SCRIPTS="" install \
+    && return 0 || return 1
+}

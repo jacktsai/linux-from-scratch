@@ -1,0 +1,22 @@
+#!/bin/bash
+function tar_name() { echo 'bzip2-1.0.6.tar.gz'; }
+function tar_dir() { echo 'bzip2-1.0.6'; }
+
+function config_pkg() {
+    patch --forward --strip=1 --input=$SRC_DIR/bzip2-1.0.6-install_docs-1.patch \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make PREFIX=/tools install \
+    && return 0 || return 1
+}

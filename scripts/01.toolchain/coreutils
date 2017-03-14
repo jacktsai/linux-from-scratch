@@ -1,9 +1,12 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'coreutils-8.26.tar.xz'; }
+function tar_dir() { echo 'coreutils-8.26'; }
 
 function config_pkg() {
+    FORCE_UNSAFE_CONFIGURE=1 \
     ./configure \
+        --prefix=/tools \
+        --enable-install-program=hostname \
     && return 0 || return 1
 }
 
@@ -13,7 +16,7 @@ function make_pkg() {
 }
 
 function check_pkg() {
-    make check \
+    make RUN_EXPENSIVE_TESTS=yes check \
     && return 0 || return 1
 }
 

@@ -3,7 +3,9 @@ function tar_name() { echo 'gcc-6.3.0.tar.bz2'; }
 function tar_dir() { echo 'gcc-6.3.0'; }
 
 function config_pkg() {
-    ./libstdc++-v3/configure           \
+    mkdir build \
+    && cd build \
+    && ../libstdc++-v3/configure        \
         --host=$LFS_TGT                 \
         --prefix=/tools                 \
         --disable-multilib              \

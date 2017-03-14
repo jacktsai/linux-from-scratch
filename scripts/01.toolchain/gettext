@@ -1,0 +1,26 @@
+#!/bin/bash
+function tar_name() { echo 'gettext-0.19.8.1.tar.xz'; }
+function tar_dir() { echo 'gettext-0.19.8.1'; }
+
+function config_pkg() {
+    EMACS="no" ./configure --prefix=/tools --disable-shared \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 -C gnulib-lib          \
+    && make -j8 -C intl pluralx.c   \
+    && make -j8 -C src msgfmt       \
+    && make -j8 -C src msgmerge     \
+    && make -j8 -C src xgettext     \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    cp src/{msgfmt,msgmerge,xgettext} /tools/bin \
+    && return 0 || return 1
+}

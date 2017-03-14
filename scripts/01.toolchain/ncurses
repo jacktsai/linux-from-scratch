@@ -1,0 +1,28 @@
+#!/bin/bash
+function tar_name() { echo 'ncurses-6.0.tar.gz'; }
+function tar_dir() { echo 'ncurses-6.0'; }
+
+function config_pkg() {
+    sed -i s/mawk// configure \
+    && ./configure --prefix=/tools \
+                --with-shared   \
+                --without-debug \
+                --without-ada   \
+                --enable-widec  \
+                --enable-overwrite \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}
