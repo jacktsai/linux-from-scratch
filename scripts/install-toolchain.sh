@@ -45,4 +45,16 @@ install_pkg binutils-cross \
 && install_pkg file \
 && install_pkg findutils \
 && install_pkg gawk \
-&& install_pkg gettext
+&& install_pkg gettext \
+&& install_pkg grep \
+&& install_pkg gzip \
+&& install_pkg m4 \
+&& install_pkg make \
+&& install_pkg patch \
+&& install_pkg perl \
+&& install_pkg sed \
+&& install_pkg tar \
+&& install_pkg texinfo \
+&& install_pkg util-linux \
+&& install_pkg xz \
+&& install_pkg zlib

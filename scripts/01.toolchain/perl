@@ -3,7 +3,7 @@ function tar_name() { echo 'tar_name'; }
 function tar_dir() { echo 'tar_dir'; }
 
 function config_pkg() {
-    ./configure --prefix=/tools \
+    sh Configure -des -Dprefix=/tools -Dlibs=-lm \
     && return 0 || return 1
 }
 
@@ -13,11 +13,12 @@ function make_pkg() {
 }
 
 function check_pkg() {
-    make check \
-    && return 0 || return 1
+    return 0
 }
 
 function install_pkg() {
-    make install \
+    cp perl cpan/podlators/scripts/pod2man /tools/bin \
+    && mkdir -p /tools/lib/perl5/5.24.1 \
+    && cp -R lib/* /tools/lib/perl5/5.24.1 \
     && return 0 || return 1
 }

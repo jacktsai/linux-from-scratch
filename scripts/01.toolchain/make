@@ -1,9 +1,9 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'make-4.2.1.tar.bz2'; }
+function tar_dir() { echo 'make-4.2.1'; }
 
 function config_pkg() {
-    ./configure --prefix=/tools \
+    ./configure --prefix=/tools --without-guile \
     && return 0 || return 1
 }
 

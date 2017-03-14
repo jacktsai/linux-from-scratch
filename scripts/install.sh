@@ -80,7 +80,9 @@ function print_result() {
         105)    echo "MAKE: FAIL";;
         106)    echo "CHECK: FAIL";;
         107)    echo "INSTALL: FAIL";;
-        0)      [ $CHECK_PKG -eq 1 ] && echo "INSTALL: Succeed" || echo "INSTALL: Succeed (without CHECK)";;
+        0)      [ $CHECK_PKG -eq 1 ] \
+                    && echo "INSTALL: Succeed" \
+                    || echo "INSTALL: Succeed (without CHECK)";;
     esac
 }
 

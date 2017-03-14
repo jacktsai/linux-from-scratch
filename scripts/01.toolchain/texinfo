@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'texinfo-6.3.tar.xz'; }
+function tar_dir() { echo 'texinfo-6.3'; }
 
 function config_pkg() {
     ./configure --prefix=/tools \

@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'grep-3.0.tar.xz'; }
+function tar_dir() { echo 'grep-3.0'; }
 
 function config_pkg() {
     ./configure --prefix=/tools \

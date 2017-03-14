@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'patch-2.7.5.tar.xz'; }
+function tar_dir() { echo 'patch-2.7.5'; }
 
 function config_pkg() {
     ./configure --prefix=/tools \
