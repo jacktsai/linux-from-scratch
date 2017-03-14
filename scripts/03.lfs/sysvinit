@@ -1,0 +1,22 @@
+#!/bin/bash
+function tar_name() { echo 'sysvinit-2.88dsf.tar.bz2'; }
+function tar_dir() { echo 'sysvinit-2.88dsf'; }
+
+function config_pkg() {
+    patch -Np1 -i $SRC_DIR/sysvinit-2.88dsf-consolidated-1.patch
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -C -j8 src \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make -C src install \
+    && return 0 || return 1
+}

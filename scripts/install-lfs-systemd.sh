@@ -67,6 +67,7 @@ install_pkg linux-headers \
 && install_pkg xz \
 && install_pkg kmod \
 && install_pkg gettext \
+&& install_pkg systemd \
 && install_pkg procps-ng \
 && install_pkg e2fsprogs \
 && install_pkg coreutils \
@@ -81,9 +82,7 @@ install_pkg linux-headers \
 && install_pkg libpipeline \
 && install_pkg make \
 && install_pkg patch \
-&& install_pkg sysklogd \
-&& install_pkg sysvinit \
-&& install_pkg eudev \
+&& install_pkg d-bus \ 
 && install_pkg util-linux \
 && install_pkg man-db \
 && install_pkg tar \
