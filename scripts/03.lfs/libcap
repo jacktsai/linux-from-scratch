@@ -1,0 +1,23 @@
+#!/bin/bash
+function tar_name() { echo 'libcap-2.25.tar.xz'; }
+function tar_dir() { echo 'libcap-2.25'; }
+
+function config_pkg() {
+    sed -i '/install.*STALIBNAME/d' libcap/Makefile \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make RAISE_SETFCAP=no lib=lib prefix=/usr install \
+    && chmod 755 /usr/lib/libcap.so \
+    && return 0 || return 1
+}

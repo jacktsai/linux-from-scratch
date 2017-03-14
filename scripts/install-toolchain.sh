@@ -25,6 +25,12 @@ function install_pkg() {
     } || return 1
 }
 
+function strip_toolchain() {
+    strip --strip-debug /tools/lib/* &> /dev/null
+    /usr/bin/strip --strip-unneeded /tools/{,s}bin/* &> /dev/null
+    rm -rf /tools/{,share}/{info,man,doc} &> /dev/null
+}
+
 install_pkg binutils-cross \
 && install_pkg gcc-cross \
 && install_pkg linux-headers \
@@ -57,4 +63,5 @@ install_pkg binutils-cross \
 && install_pkg texinfo \
 && install_pkg util-linux \
 && install_pkg xz \
-&& install_pkg zlib
+&& install_pkg zlib \
+&& strip_toolchain

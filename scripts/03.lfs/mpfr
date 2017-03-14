@@ -1,0 +1,28 @@
+#!/bin/bash
+function tar_name() { echo 'mpfr-3.1.5.tar.xz'; }
+function tar_dir() { echo 'mpfr-3.1.5'; }
+
+function config_pkg() {
+    ./configure --prefix=/usr        \
+        --disable-static     \
+        --enable-thread-safe \
+        --docdir=/usr/share/doc/mpfr-3.1.5 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && make html \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && make install-html \
+    && return 0 || return 1
+}

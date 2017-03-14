@@ -1,13 +1,13 @@
 #!/bin/bash
-mount -t proc /proc /mnt/lfs/proc
-mount --rbind /sys /mnt/lfs/sys
-mount --make-rslave /mnt/lfs/sys
-mount --rbind /dev /mnt/lfs/dev
-mount --make-rslave /mnt/lfs/dev
-mount -t devpts devpts /mnt/lfs/dev/pts -o gid=5,mode=620
-mount -t tmpfs tmpfs /mnt/lfs/run
+mount -t proc /proc $LFS/proc
+mount --rbind /sys $LFS/sys
+mount --make-rslave $LFS/sys
+mount --rbind /dev $LFS/dev
+mount --make-rslave $LFS/dev
+mount -t devpts devpts $LFS/dev/pts -o gid=5,mode=620
+mount -t tmpfs tmpfs $LFS/run
 
 # 讓後續安裝動作可以繼續
-mount --bind /mnt/lfs/tmp/bin /mnt/lfs/tools/bin
-mount --bind /mnt/lfs/tmp/x86_64-pc-linux-gnu/bin /mnt/lfs/tools/x86_64-pc-linux-gnu/bin
-mount --bind /mnt/lfs/tmp/gcc-specs /mnt/lfs/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs
+mount --bind $LFS/tmp/bin $LFS/tools/bin
+mount --bind $LFS/tmp/x86_64-pc-linux-gnu/bin $LFS/tools/x86_64-pc-linux-gnu/bin
+mount --bind $LFS/tmp/gcc-specs $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs

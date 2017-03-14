@@ -1,0 +1,37 @@
+#!/bin/bash
+function tar_name() { echo 'gcc-6.3.0.tar.bz2'; }
+function tar_dir() { echo 'gcc-6.3.0'; }
+
+function config_pkg() {
+    sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64 \
+    && mkdir build \
+    && cd build \
+    && ../configure --prefix=/usr     \
+             --enable-languages=c,c++ \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --with-system-zlib       \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    ulimit -s 32768 \
+    && make -k check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        ln -s ../usr/bin/cpp /lib
+        ln -s gcc /usr/bin/cc
+        install -dm755 /usr/lib/bfd-plugins
+        ln -sf ../../libexec/gcc/$(gcc -dumpmachine)/6.3.0/liblto_plugin.so /usr/lib/bfd-plugins/
+    } \
+    && return 0 || return 1
+}

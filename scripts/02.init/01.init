@@ -1,15 +1,17 @@
 #!/tools/bin/bash
-echo "8.0-systemd" > /mnt/lfs/etc/lfs-release
+mkdir $LFS/{proc,sys,run,etc} 2> /dev/null
+mkdir -p $LFS/dev/pts 2> /dev/null
+echo "8.0-systemd" > $LFS/etc/lfs-release
 
 # 將 /tools/bin, /tools/$(uname -m)-pc-linux-gnu/bin 目錄複製一份到 /tmp 中，供之後可以修改時使用
-cp -r /tools/bin /mnt/lfs/tmp/bin
-mkdir -p /mnt/lfs/tmp/$(uname -m)-pc-linux-gnu
-cp -r /tools/$(uname -m)-pc-linux-gnu/bin /mnt/lfs/tmp/$(uname -m)-pc-linux-gnu/
+cp -r /tools/bin $LFS/tmp/bin
+mkdir -p $LFS/tmp/$(uname -m)-pc-linux-gnu 2> /dev/null
+cp -r /tools/$(uname -m)-pc-linux-gnu/bin $LFS/tmp/$(uname -m)-pc-linux-gnu/
 
 # 將 gcc specs 複製一份可修改時使用
-cp /mnt/lfs/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs /mnt/lfs/tmp/gcc-specs
+cp $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs $LFS/tmp/gcc-specs
 
 # 複製 root 的家目錄
-cp -r /tools/scripts/02.init/root /mnt/lfs/
+cp -r /tools/scripts/02.init/root $LFS/
 
-mkdir /mnt/lfs/tmp/build
+mkdir -p $LFS/tmp/build 2> /dev/null

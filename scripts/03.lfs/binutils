@@ -1,0 +1,30 @@
+#!/bin/bash
+function tar_name() { echo 'binutils-2.27.tar.bz2'; }
+function tar_dir() { echo 'binutils-2.27'; }
+
+function config_pkg() {
+    mkdir build && cd build
+    ../configure --prefix=/usr       \
+                 --enable-gold       \
+                 --enable-ld=default \
+                 --enable-plugins    \
+                 --enable-shared     \
+                 --disable-werror    \
+                 --with-system-zlib  \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make tooldir=/usr -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make -k check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make tooldir=/usr install \
+    && return 0 || return 1
+}

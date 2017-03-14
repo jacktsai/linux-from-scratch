@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'perl-5.24.1.tar.bz2'; }
+function tar_dir() { echo 'perl-5.24.1'; }
 
 function config_pkg() {
     sh Configure -des -Dprefix=/tools -Dlibs=-lm \

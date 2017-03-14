@@ -1,0 +1,42 @@
+#!/bin/bash
+function tar_name() { echo 'ncurses-6.0.tar.gz'; }
+function tar_dir() { echo 'ncurses-6.0'; }
+
+function config_pkg() {
+    sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in \
+    && ./configure \
+        --prefix=/usr \
+        --mandir=/usr/share/man \
+        --with-shared           \
+        --without-debug         \
+        --without-normal        \
+        --enable-pc-files       \
+        --enable-widec          \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/lib/libncursesw.so.6* /lib
+        ln -sf ../../lib/$(readlink /usr/lib/libncursesw.so) /usr/lib/libncursesw.so
+        for lib in ncurses form panel menu ; do
+            rm -f                     /usr/lib/lib${lib}.so
+            echo "INPUT(-l${lib}w)" > /usr/lib/lib${lib}.so
+            ln -sf ${lib}w.pc         /usr/lib/pkgconfig/${lib}.pc
+        done
+        rm -f                      /usr/lib/libcursesw.so
+        echo "INPUT(-lncursesw)" > /usr/lib/libcursesw.so
+        ln -sf libncurses.so       /usr/lib/libcurses.so
+    } \
+    && return 0 || return 1
+}

@@ -1,0 +1,32 @@
+#!/bin/bash
+function tar_name() { echo 'attr-2.4.47.src.tar.gz'; }
+function tar_dir() { echo 'attr-2.4.47'; }
+
+function config_pkg() {
+    sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in \
+    && sed -i -e "/SUBDIRS/s|man[25]||g" man/Makefile \
+    && ./configure \
+        --prefix=/usr \
+        --disable-static \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make -j1 tests root-tests \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install install-dev install-lib \
+    && {
+        chmod 755 /usr/lib/libattr.so
+        mv /usr/lib/libattr.so.* /lib
+        ln -sf ../../lib/$(readlink /usr/lib/libattr.so) /usr/lib/libattr.so
+    } \
+    && return 0 || return 1
+}

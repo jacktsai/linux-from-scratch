@@ -1,0 +1,27 @@
+#!/bin/bash
+function tar_name() { echo 'flex-2.6.3.tar.gz'; }
+function tar_dir() { echo 'flex-2.6.3'; }
+
+function config_pkg() {
+    HELP2MAN=/tools/bin/true \
+    ./configure \
+        --prefix=/usr \
+        --docdir=/usr/share/doc/flex-2.6.3 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && ln -s flex /usr/bin/lex \
+    && return 0 || return 1
+}

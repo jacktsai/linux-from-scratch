@@ -1,0 +1,32 @@
+#!/bin/bash
+function tar_name() { echo 'sed-4.4.tar.xz'; }
+function tar_dir() { echo 'sed-4.4'; }
+
+function config_pkg() {
+    sed -i 's/usr/tools/' build-aux/help2man \
+    && sed -i 's/panic-tests.sh//' Makefile.in \
+    && ./configure \
+        --prefix=/usr \
+        --bindir=/bin \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && make html \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        install -d -m755           /usr/share/doc/sed-4.4
+        install -m644 doc/sed.html /usr/share/doc/sed-4.4
+    } \
+    && return 0 || return 1
+}

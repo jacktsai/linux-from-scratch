@@ -1,9 +1,11 @@
 #!/bin/bash
-function tar_name() { echo 'tar-1.29.tar.xz'; }
-function tar_dir() { echo 'tar-1.29'; }
+function tar_name() { echo 'bison-3.0.4.tar.xz'; }
+function tar_dir() { echo 'bison-3.0.4'; }
 
 function config_pkg() {
-    ./configure --prefix=/tools \
+    ./configure \
+        --prefix=/usr \
+        --docdir=/usr/share/doc/bison-3.0.4 \
     && return 0 || return 1
 }
 
@@ -13,8 +15,6 @@ function make_pkg() {
 }
 
 function check_pkg() {
-    # make check \
-    # && return 0 || return 1
     return 0
 }
 
