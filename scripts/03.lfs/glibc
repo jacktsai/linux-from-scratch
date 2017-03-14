@@ -8,11 +8,12 @@ function config_pkg() {
     ln -s ../lib/ld-linux-x86-64.so.2 /lib64/ld-lsb-x86-64.so.3 2> /dev/null
 
     mkdir build && cd build \
-    && ../configure --prefix=/usr                   \
-                 --enable-kernel=2.6.32          \
-                 --enable-obsolete-rpc           \
-                 --enable-stack-protector=strong \
-                 libc_cv_slibdir=/lib \
+    && ../configure \
+             --prefix=/usr                \
+             --enable-kernel=2.6.32          \
+             --enable-obsolete-rpc           \
+             --enable-stack-protector=strong \
+             libc_cv_slibdir=/lib \
     && return 0 || return 1
 }
 
@@ -75,10 +76,11 @@ rpc: files
         mv /tools/bin/{ld-new,ld}
         ln -s /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
 
-        gcc -dumpspecs | sed -e 's@/tools@@g'                   \
-            -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
-            -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
-            `dirname $(gcc --print-libgcc-file-name)`/specs
+        SPEC_PATH=`dirname $(gcc --print-libgcc-file-name)`/specs
+        gcc -dumpspecs | sed -e 's@/tools@@g'                             \
+            -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}'           \
+            -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' > /tmp/gcc-specs \
+        mount --bind /tmp/gcc-specs $SPEC_PATH
     } \
     && return 0 || return 1
 }

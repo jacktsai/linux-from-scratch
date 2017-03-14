@@ -1,15 +1,20 @@
 #!/tools/bin/bash
-mkdir $LFS/{proc,sys,run,etc,root} 2> /dev/null
+mkdir $LFS/{proc,sys,run,etc,root,lib64} 2> /dev/null
+mkdir -p $LFS/{bin,sbin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,srv,var}
+mkdir -p $LFS/usr/{,local/}{bin,include,lib,sbin,src}
+mkdir -p $LFS/usr/{,local/}share/{color,dict,doc,info,locale,man/man{1..8},misc,terminfo,zoneinfo}
+mkdir -p $LFS/usr/libexec
+mkdir -p $LFS/var/{opt,cache,lib/{color,misc,locate},local,log,mail,spool}
 mkdir -p $LFS/dev/pts 2> /dev/null
+mkdir -p $LFS/tools/bin
+mkdir -p $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/
+mkdir -p $LFS/tools/x86_64-pc-linux-gnu/bin
 echo "8.0-systemd" > $LFS/etc/lfs-release
 
 # 將 /tools/bin, /tools/$(uname -m)-pc-linux-gnu/bin 目錄複製一份到 /tmp 中，供之後可以修改時使用
 cp -r /tools/bin $LFS/tmp/bin
 mkdir -p $LFS/tmp/$(uname -m)-pc-linux-gnu 2> /dev/null
 cp -r /tools/$(uname -m)-pc-linux-gnu/bin $LFS/tmp/$(uname -m)-pc-linux-gnu/
-
-# 將 gcc specs 複製一份可修改時使用
-cp $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs $LFS/tmp/gcc-specs
 
 # 建立 root 的 .bash_profile
 echo "#!/tools/bin/bash

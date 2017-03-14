@@ -10,4 +10,4 @@ mount -t tmpfs tmpfs $LFS/run
 # 讓後續安裝動作可以繼續
 mount --bind $LFS/tmp/bin $LFS/tools/bin
 mount --bind $LFS/tmp/x86_64-pc-linux-gnu/bin $LFS/tools/x86_64-pc-linux-gnu/bin
-mount --bind $LFS/tmp/gcc-specs $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs
+[ -e $LFS/tmp/gcc-specs ] && mount --bind $LFS/tmp/gcc-specs $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/specs
