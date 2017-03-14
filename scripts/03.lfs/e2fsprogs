@@ -1,0 +1,42 @@
+#!/bin/bash
+function tar_name() { echo 'e2fsprogs-1.43.4.tar.gz'; }
+function tar_dir() { echo 'e2fsprogs-1.43.4'; }
+
+function config_pkg() {
+    mkdir -v build && cd build
+    LIBS=-L/tools/lib                    \
+    CFLAGS=-I/tools/include              \
+    PKG_CONFIG_PATH=/tools/lib/pkgconfig \
+    ../configure \
+        --prefix=/usr           \
+        --bindir=/bin           \
+        --with-root-prefix=""   \
+        --enable-elf-shlibs     \
+        --disable-libblkid      \
+        --disable-libuuid       \
+        --disable-uuidd         \
+        --disable-fsck          \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    ln -sf /tools/lib/lib{blk,uu}id.so.1 lib \
+    && make LD_LIBRARY_PATH=/tools/lib check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && make install-libs \
+    && {
+        chmod -v u+w /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
+        gunzip -v /usr/share/info/libext2fs.info.gz
+        install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info
+    } \
+    && return 0 || return 1
+}

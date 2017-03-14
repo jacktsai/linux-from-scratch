@@ -1,0 +1,41 @@
+#!/bin/bash
+function tar_name() { echo 'tar_name'; }
+function tar_dir() { echo 'tar_dir'; }
+
+function config_pkg() {
+    patch --forward --strip=1 --input=/tools/src/coreutils-8.26-i18n-1.patch \
+    && sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk \
+    && FORCE_UNSAFE_CONFIGURE=1 \
+        ./configure \
+            --prefix=/usr            \
+            --enable-no-install-program=kill,uptime \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    FORCE_UNSAFE_CONFIGURE=1 make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make NON_ROOT_USERNAME=nobody check-root \
+    && echo "dummy:x:1000:nobody" >> /etc/group \
+    && chown -Rv nobody . \
+    && su nobody -s /bin/bash -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check" \
+    && sed -i '/dummy/d' /etc/group \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin
+        mv /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin
+        mv /usr/bin/{rmdir,stty,sync,true,uname} /bin
+        mv /usr/bin/chroot /usr/sbin
+        mv /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+        sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8
+        mv /usr/bin/{head,sleep,nice,test,[} /bin
+    } \
+    && return 0 || return 1
+}

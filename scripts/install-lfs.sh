@@ -59,4 +59,15 @@ install_pkg linux-headers \
 && install_pkg gperf \
 && install_pkg expat \
 && install_pkg inetutils \
-&& install_pkg perl
+&& install_pkg perl \
+&& install_pkg xml-parser \
+&& install_pkg intltool \
+&& install_pkg autoconf \
+&& install_pkg automake \
+&& install_pkg xz \
+&& install_pkg kmod \
+&& install_pkg gettext \
+&& install_pkg systemd \
+&& install_pkg procps-ng \
+&& install_pkg e2fsprogs \
+&& install_pkg coreutils

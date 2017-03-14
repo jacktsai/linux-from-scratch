@@ -1,0 +1,31 @@
+#!/bin/bash
+function tar_name() { echo 'xz-5.2.3.tar.xz'; }
+function tar_dir() { echo 'xz-5.2.3'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/usr    \
+        --disable-static \
+        --docdir=/usr/share/doc/xz-5.2.3 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} /bin
+        mv /usr/lib/liblzma.so.* /lib
+        ln -sf ../../lib/$(readlink /usr/lib/liblzma.so) /usr/lib/liblzma.so
+    } \
+    && return 0 || return 1
+}

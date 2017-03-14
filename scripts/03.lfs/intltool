@@ -1,0 +1,25 @@
+#!/bin/bash
+function tar_name() { echo 'intltool-0.51.0.tar.gz'; }
+function tar_dir() { echo 'intltool-0.51.0'; }
+
+function config_pkg() {
+    sed -i 's:\\\${:\\\$\\{:' intltool-update.in \
+    && ./configure --prefix=/usr \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && install -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO \
+    && return 0 || return 1
+}

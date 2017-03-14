@@ -1,0 +1,29 @@
+#!/bin/bash
+function tar_name() { echo 'gettext-0.19.8.1.tar.xz'; }
+function tar_dir() { echo 'gettext-0.19.8.1'; }
+
+function config_pkg() {
+    sed -i '/^TESTS =/d' gettext-runtime/tests/Makefile.in \
+    && sed -i 's/test-lock..EXEEXT.//' gettext-tools/gnulib-tests/Makefile.in \
+    && ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --docdir=/usr/share/doc/gettext-0.19.8.1 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && chmod 0755 /usr/lib/preloadable_libintl.so \
+    && return 0 || return 1
+}
