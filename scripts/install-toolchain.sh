@@ -34,7 +34,7 @@ install_pkg binutils-cross \
 && install_pkg gcc \
 && install_pkg tcl-core \
 && install_pkg expect \
-&& install_pkg dejagu \
+&& install_pkg dejagnu \
 && install_pkg check \
 && install_pkg ncurses \
 && install_pkg bash \
