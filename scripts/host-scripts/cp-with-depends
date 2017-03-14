@@ -1,0 +1,44 @@
+#!/bin/bash
+
+function _scp() {
+  local srcPath=$1
+  if [ ! -e $srcPath ]; then
+    for possiblePath in /bin /sbin /usr/bin /usr/sbin /lib /lib64 /usr/lib /usr/lib64
+    do
+      srcPath=$possiblePath/$1
+      if [ -e $srcPath ]; then
+        break
+      fi
+    done
+  fi
+
+  local targetPath=$targetBase$srcPath
+
+  if [ ! -e $srcPath ]; then
+    printf "$1 not found.\n"
+  else
+    mkdir -p $(dirname $targetPath) 2> /dev/null
+    cp -nv $srcPath $targetPath
+    _dcp $srcPath
+  fi
+}
+
+# copy dependency
+function _dcp() {
+    for deplib in $(readelf -d $1 | grep NEEDED | awk '{ print $5 }' | sed 's/\[//g' | sed 's/\]//g'); do
+      _scp $deplib
+    done
+}
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <source file> [dest directory]"
+    exit
+fi
+
+targetBase=$LFS
+if [ $# -gt 1 ]; then
+    targetBase=$2
+fi
+
+echo copying "'"$1"'" to $targetBase
+_scp $1
