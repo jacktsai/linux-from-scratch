@@ -1,0 +1,34 @@
+#!/bin/bash
+function tar_name() { echo 'binutils-2.27.tar.bz2'; }
+function tar_dir() { echo 'binutils-2.27'; }
+
+function config_pkg() {
+    mkdir build && cd build 
+    CC=$LFS_TGT-gcc                \
+    AR=$LFS_TGT-ar                 \
+    RANLIB=$LFS_TGT-ranlib         \
+    ../configure                   \
+        --prefix=/tools            \
+        --disable-nls              \
+        --disable-werror           \
+        --with-lib-path=/tools/lib \
+        --with-sysroot \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && make -C ld clean \
+    && make -C ld LIB_PATH=/usr/lib:/lib \
+    && cp -v ld/ld-new /tools/bin \
+    && return 0 || return 1
+}

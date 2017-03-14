@@ -1,0 +1,29 @@
+#!/bin/bash
+function tar_name() { echo 'gcc-6.3.0.tar.bz2'; }
+function tar_dir() { echo 'gcc-6.3.0'; }
+
+function config_pkg() {
+    ./libstdc++-v3/configure           \
+        --host=$LFS_TGT                 \
+        --prefix=/tools                 \
+        --disable-multilib              \
+        --disable-nls                   \
+        --disable-libstdcxx-threads     \
+        --disable-libstdcxx-pch         \
+        --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/6.3.0 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

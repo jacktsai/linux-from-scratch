@@ -1,14 +1,14 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'linux-4.9.9.tar.xz'; }
+function tar_dir() { echo 'linux-4.9.9'; }
 
 function config_pkg() {
-    ./configure \
+    make mrproper \
     && return 0 || return 1
 }
 
 function make_pkg() {
-    make -j8 \
+    make INSTALL_HDR_PATH=dest -j8 headers_install \
     && return 0 || return 1
 }
 
@@ -17,6 +17,6 @@ function check_pkg() {
 }
 
 function install_pkg() {
-    make install \
+    cp -r dest/include/* /tools/include \
     && return 0 || return 1
 }

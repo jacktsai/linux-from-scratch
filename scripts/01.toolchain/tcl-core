@@ -1,0 +1,27 @@
+#!/bin/bash
+function tar_name() { echo 'tcl-core8.6.6-src.tar.gz'; }
+function tar_dir() { echo 'tatcl8.6.6r_dir'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/tools \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    TZ=UTC make test \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install > /dev/null \
+    && chmod u+w /tools/lib/libtcl8.6.so \
+    && make install-private-headers > /dev/null \
+    && ln -s tclsh8.6 /tools/bin/tclsh \
+    && return 0 || return 1
+}
