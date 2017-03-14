@@ -1,0 +1,27 @@
+#!/bin/bash
+function tar_name() { echo 'bc-1.06.95.tar.bz2'; }
+function tar_dir() { echo 'bc-1.06.95'; }
+
+function config_pkg() {
+    patch --forward --strip=1 --input=$SRC_DIR/bc-1.06.95-memory_leak-1.patch \
+    && ./configure \
+        --prefix=/usr           \
+        --with-readline         \
+        --mandir=/usr/share/man \
+        --infodir=/usr/share/info \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

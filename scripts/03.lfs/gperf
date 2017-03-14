@@ -1,0 +1,25 @@
+#!/bin/bash
+function tar_name() { echo 'gperf-3.0.4.tar.gz'; }
+function tar_dir() { echo 'gperf-3.0.4'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/usr \
+        --docdir=/usr/share/doc/gperf-3.0.4 \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

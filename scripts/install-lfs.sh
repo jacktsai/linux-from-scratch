@@ -50,4 +50,13 @@ install_pkg linux-headers \
 && install_pkg m4 \
 && install_pkg bison \
 && install_pkg flex \
-&& install_pkg grep
+&& install_pkg grep \
+&& install_pkg readline \
+&& install_pkg bash \
+&& install_pkg bc \
+&& install_pkg libtool \
+&& install_pkg gdbm \
+&& install_pkg gperf \
+&& install_pkg expat \
+&& install_pkg inetutils \
+&& install_pkg perl

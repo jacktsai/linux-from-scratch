@@ -1,0 +1,36 @@
+#!/bin/bash
+function tar_name() { echo 'inetutils-1.9.4.tar.xz'; }
+function tar_dir() { echo 'inetutils-1.9.4'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/usr        \
+        --localstatedir=/var \
+        --disable-logger     \
+        --disable-whois      \
+        --disable-rcp        \
+        --disable-rexec      \
+        --disable-rlogin     \
+        --disable-rsh        \
+        --disable-servers    \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/bin/{hostname,ping,ping6,traceroute} /bin
+        mv /usr/bin/ifconfig /sbin
+    } \
+    && return 0 || return 1
+}

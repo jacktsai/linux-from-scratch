@@ -1,0 +1,25 @@
+#!/bin/bash
+function tar_name() { echo 'expat-2.2.0.tar.bz2'; }
+function tar_dir() { echo 'expat-2.2.0'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

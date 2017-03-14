@@ -1,0 +1,36 @@
+#!/bin/bash
+function tar_name() { echo 'perl-5.24.1.tar.bz2'; }
+function tar_dir() { echo 'perl-5.24.1'; }
+
+function config_pkg() {
+    echo "127.0.0.1 localhost $(hostname)" > /etc/hosts
+    export BUILD_ZLIB=False
+    export BUILD_BZIP2=0
+    sh Configure \
+        -des \
+        -Dprefix=/usr                 \
+        -Dvendorprefix=/usr           \
+        -Dman1dir=/usr/share/man/man1 \
+        -Dman3dir=/usr/share/man/man3 \
+        -Dpager="/usr/bin/less -isR"  \
+        -Duseshrplib \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make -k test \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        unset BUILD_ZLIB BUILD_BZIP2
+    }
+    && return 0 || return 1
+}
