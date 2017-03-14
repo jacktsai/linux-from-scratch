@@ -3,6 +3,7 @@ function tar_name() { echo 'gettext-0.19.8.1.tar.xz'; }
 function tar_dir() { echo 'gettext-0.19.8.1'; }
 
 function config_pkg() {
+    cd gettext-tools
     EMACS="no" ./configure --prefix=/tools --disable-shared \
     && return 0 || return 1
 }

@@ -7,9 +7,6 @@ mount --make-rslave /mnt/lfs/dev
 mount -t devpts devpts /mnt/lfs/dev/pts -o gid=5,mode=620
 mount -t tmpfs tmpfs /mnt/lfs/run
 
-# for 編譯時加速
-mount -t tmpfs tmpfs /mnt/lfs/tmp/build
-
 # 讓後續安裝動作可以繼續
 mount --bind /mnt/lfs/tmp/bin /mnt/lfs/tools/bin
 mount --bind /mnt/lfs/tmp/x86_64-pc-linux-gnu/bin /mnt/lfs/tools/x86_64-pc-linux-gnu/bin

@@ -1,6 +1,6 @@
 #!/tools/bin/bash
 [ ! -e /etc/lfs-release ] && {
-    echo 請在 LFS 環境執行!
+    echo 請在 LFS 環境執行！
     exit 0
 }
 

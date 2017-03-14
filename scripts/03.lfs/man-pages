@@ -1,0 +1,20 @@
+#!/bin/bash
+function tar_name() { echo 'man-pages-4.09.tar.xz'; }
+function tar_dir() { echo 'man-pages-4.09'; }
+
+function config_pkg() {
+    return 0
+}
+
+function make_pkg() {
+    return 0
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

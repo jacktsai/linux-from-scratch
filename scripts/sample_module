@@ -3,7 +3,7 @@ function tar_name() { echo 'tar_name'; }
 function tar_dir() { echo 'tar_dir'; }
 
 function config_pkg() {
-    ./configure --prefix=/tools \
+    ./configure --prefix=/usr \
     && return 0 || return 1
 }
 
