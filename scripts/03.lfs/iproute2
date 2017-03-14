@@ -1,0 +1,25 @@
+#!/bin/bash
+function tar_name() { echo 'iproute2-4.9.0.tar.xz'; }
+function tar_dir() { echo 'iproute2-4.9.0'; }
+
+function config_pkg() {
+    sed -i /ARPD/d Makefile \
+    && sed -i 's/arpd.8//' man/man8/Makefile \
+    && rm doc/arpd.sgml \
+    && sed -i 's/m_ipt.o//' tc/Makefile \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make DOCDIR=/usr/share/doc/iproute2-4.9.0 install \
+    && return 0 || return 1
+}

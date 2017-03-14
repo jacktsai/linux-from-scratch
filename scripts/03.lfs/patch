@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'm4-1.4.18.tar.xz'; }
-function tar_dir() { echo 'm4-1.4.18'; }
+function tar_name() { echo 'patch-2.7.5.tar.xz'; }
+function tar_dir() { echo 'patch-2.7.5'; }
 
 function config_pkg() {
     ./configure --prefix=/usr \

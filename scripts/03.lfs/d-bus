@@ -1,0 +1,35 @@
+#!/bin/bash
+function tar_name() { echo 'dbus-1.10.14.tar.gz'; }
+function tar_dir() { echo 'dbus-1.10.14'; }
+
+function config_pkg() {
+    ./configure \
+        --prefix=/usr                       \
+        --sysconfdir=/etc                   \
+        --localstatedir=/var                \
+        --disable-static                    \
+        --disable-doxygen-docs              \
+        --disable-xml-docs                  \
+        --docdir=/usr/share/doc/dbus-1.10.14 \
+        --with-console-auth-dir=/run/console \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/lib/libdbus-1.so.* /lib
+        ln -sf ../../lib/$(readlink /usr/lib/libdbus-1.so) /usr/lib/libdbus-1.so
+        ln -sf /etc/machine-id /var/lib/dbus
+    } \
+    && return 0 || return 1
+}

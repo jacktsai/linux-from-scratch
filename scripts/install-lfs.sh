@@ -44,7 +44,7 @@ install_pkg linux-headers \
 && install_pkg acl \
 && install_pkg libcap \
 && install_pkg sed \
-&& install_pkg shadow
+&& install_pkg shadow \
 && install_pkg psmisc \
 && install_pkg iana-etc \
 && install_pkg m4 \
@@ -70,4 +70,21 @@ install_pkg linux-headers \
 && install_pkg systemd \
 && install_pkg procps-ng \
 && install_pkg e2fsprogs \
-&& install_pkg coreutils
+&& install_pkg coreutils \
+&& install_pkg diffutils \
+&& install_pkg gawk \
+&& install_pkg findutils \
+&& install_pkg groff \
+&& install_pkg less \
+&& install_pkg gzip \
+&& install_pkg iproute2 \
+&& install_pkg kbd \
+&& install_pkg libpipeline \
+&& install_pkg make \
+&& install_pkg patch \
+&& install_pkg d-bus \ 
+&& install_pkg util-linux \
+&& install_pkg man-db \
+&& install_pkg tar \
+&& install_pkg texinfo \
+&& install_pkg vim

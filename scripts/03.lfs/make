@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'm4-1.4.18.tar.xz'; }
-function tar_dir() { echo 'm4-1.4.18'; }
+function tar_name() { echo 'make-4.2.1.tar.bz2'; }
+function tar_dir() { echo 'make-4.2.1'; }
 
 function config_pkg() {
     ./configure --prefix=/usr \

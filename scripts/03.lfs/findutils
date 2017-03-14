@@ -1,0 +1,28 @@
+#!/bin/bash
+function tar_name() { echo 'findutils-4.6.0.tar.gz'; }
+function tar_dir() { echo 'findutils-4.6.0'; }
+
+function config_pkg() {
+    sed -i 's/test-lock..EXEEXT.//' tests/Makefile.in \
+    && ./configure --prefix=/usr --localstatedir=/var/lib/locate \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        mv /usr/bin/find /bin
+        sed -i 's|find:=${BINDIR}|find:=/bin|' /usr/bin/updatedb
+    } \
+    && return 0 || return 1
+}

@@ -1,0 +1,26 @@
+#!/bin/bash
+function tar_name() { echo 'kbd-2.0.4.tar.xz'; }
+function tar_dir() { echo 'kbd-2.0.4'; }
+
+function config_pkg() {
+    patch -Np1 -i $SRC_DIR/kbd-2.0.4-backspace-1.patch \
+    && sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure \
+    && sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in \
+    && PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr --disable-vlock \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make check \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

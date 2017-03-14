@@ -1,0 +1,31 @@
+#!/bin/bash
+function tar_name() { echo 'tar_name'; }
+function tar_dir() { echo 'tar_dir'; }
+
+function config_pkg() {
+    echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+    ./configure --prefix=/usr \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    make -j1 test \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && {
+        ln -s vim /usr/bin/vi
+        for L in  /usr/share/man/{,*/}man1/vim.1; do
+            ln -s vim.1 $(dirname $L)/vi.1
+        done
+        ln -s ../vim/vim80/doc /usr/share/doc/vim-8.0.069
+    }
+    && return 0 || return 1
+}

@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'm4-1.4.18.tar.xz'; }
-function tar_dir() { echo 'm4-1.4.18'; }
+function tar_name() { echo 'gzip-1.8.tar.xz'; }
+function tar_dir() { echo 'gzip-1.8'; }
 
 function config_pkg() {
     ./configure --prefix=/usr \
@@ -19,5 +19,6 @@ function check_pkg() {
 
 function install_pkg() {
     make install \
+    && mv /usr/bin/gzip /bin \
     && return 0 || return 1
 }

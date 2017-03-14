@@ -1,0 +1,37 @@
+#!/bin/bash
+function tar_name() { echo 'util-linux-2.29.1.tar.xz'; }
+function tar_dir() { echo 'util-linux-2.29.1'; }
+
+function config_pkg() {
+    mkdir -p /var/lib/hwclock 2> /dev/null
+    ./configure \
+            ADJTIME_PATH=/var/lib/hwclock/adjtime   \
+            --docdir=/usr/share/doc/util-linux-2.29.1 \
+            --disable-chfn-chsh  \
+            --disable-login      \
+            --disable-nologin    \
+            --disable-su         \
+            --disable-setpriv    \
+            --disable-runuser    \
+            --disable-pylibmount \
+            --disable-static     \
+            --without-python     \
+            --enable-libmount-force-mountinfo \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    chown -Rv nobody . \
+    && su nobody -s /bin/bash -c "PATH=$PATH make -k check" \
+    && return 0 || return 1
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}
