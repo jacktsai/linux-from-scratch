@@ -6,7 +6,7 @@ mkdir -p $LFS/usr/{,local/}share/{color,dict,doc,info,locale,man/man{1..8},misc,
 mkdir -p $LFS/usr/libexec
 mkdir -p $LFS/var/{opt,cache,lib/{color,misc,locate},local,log,mail,spool}
 mkdir -p $LFS/dev/pts 2> /dev/null
-mkdir -p $LFS/tools/bin
+mkdir -p $LFS/tools/{bin,config,scripts}
 mkdir -p $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/
 mkdir -p $LFS/tools/x86_64-pc-linux-gnu/bin
 echo "8.0-systemd" > $LFS/etc/lfs-release

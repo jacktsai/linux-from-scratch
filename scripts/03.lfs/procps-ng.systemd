@@ -10,6 +10,7 @@ function config_pkg() {
         --docdir=/usr/share/doc/procps-ng-3.3.12 \
         --disable-static                         \
         --disable-kill                           \
+        --with-systemd                           \
     && return 0 || return 1
 }
 

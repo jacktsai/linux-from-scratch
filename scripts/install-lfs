@@ -21,7 +21,7 @@ function install_pkg() {
     }
 
     printf '\nInstalling %s ...\n' $1
-    $SCRIPT_DIR/install.sh $SCRIPT_DIR/03.lfs/$1 && {
+    $SCRIPT_DIR/installer $SCRIPT_DIR/03.lfs/$1 && {
         touch /install-log/$1
         return 0
     } || return 1

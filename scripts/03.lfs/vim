@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'vim-8.0.069.tar.bz2'; }
+function tar_dir() { echo 'vim80'; }
 
 function config_pkg() {
     echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
@@ -26,6 +26,6 @@ function install_pkg() {
             ln -s vim.1 $(dirname $L)/vi.1
         done
         ln -s ../vim/vim80/doc /usr/share/doc/vim-8.0.069
-    }
+    } \
     && return 0 || return 1
 }

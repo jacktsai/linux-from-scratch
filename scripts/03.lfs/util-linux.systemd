@@ -4,7 +4,8 @@ function tar_dir() { echo 'util-linux-2.29.1'; }
 
 function config_pkg() {
     mkdir -p /var/lib/hwclock 2> /dev/null
-    ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime   \
+    ./configure \
+            ADJTIME_PATH=/var/lib/hwclock/adjtime   \
             --docdir=/usr/share/doc/util-linux-2.29.1 \
             --disable-chfn-chsh  \
             --disable-login      \
@@ -15,8 +16,7 @@ function config_pkg() {
             --disable-pylibmount \
             --disable-static     \
             --without-python     \
-            --without-systemd    \
-            --without-systemdsystemunitdir \
+            --enable-libmount-force-mountinfo \
     && return 0 || return 1
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'coreutils-8.26.tar.xz'; }
+function tar_dir() { echo 'coreutils-8.26'; }
 
 function config_pkg() {
     patch --forward --strip=1 --input=/tools/src/coreutils-8.26-i18n-1.patch \
@@ -29,13 +29,13 @@ function check_pkg() {
 function install_pkg() {
     make install \
     && {
-        mv /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin
-        mv /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin
-        mv /usr/bin/{rmdir,stty,sync,true,uname} /bin
-        mv /usr/bin/chroot /usr/sbin
-        mv /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+        mv /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin 2> /dev/null
+        mv /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin 2> /dev/null
+        mv /usr/bin/{rmdir,stty,sync,true,uname} /bin 2> /dev/null
+        mv /usr/bin/chroot /usr/sbin 2> /dev/null
+        mv /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8 2> /dev/null
         sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8
-        mv /usr/bin/{head,sleep,nice,test,[} /bin
+        mv /usr/bin/{head,sleep,nice,test,[} /bin 2> /dev/null
     } \
     && return 0 || return 1
 }
