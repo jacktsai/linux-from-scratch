@@ -30,7 +30,7 @@ WORK_DIR='/tmp/build'
 mkdir $WORK_DIR 2> /dev/null
 PKG_NAME=$(tar_name)
 PKG_DIR=$(tar_dir)
-CHECK_PKG=1
+CHECK_PKG=0
 
 [ ! -e $WORK_DIR ] && {
     printf 'WORK_DIR "%s" Not Found !!\n' $WORK_DIR
@@ -46,7 +46,7 @@ CHECK_PKG=1
 #     esac
 # done
 
-function install() {
+function install_flow() {
     cd $WORK_DIR
     [ -e $PKG_DIR ] && rm -rf $PKG_DIR
 
@@ -60,13 +60,17 @@ function install() {
         return 103
     }
 
+    printf "[[[ BEGIN CONFIG ]]]\n"
     config_pkg && {
+        printf "[[[ BEGIN MAKE ]]]\n"
         make_pkg && {
 
             [ $CHECK_PKG -eq 1 ] && {
+                printf "[[[ BEGIN CHECK ]]]\n"
                 check_pkg || return 106
             }
 
+            printf "[[[ BEGIN INSTALL ]]]\n"
             install_pkg && return 0 || return 107
         } || return 105
     } || return 104
@@ -87,7 +91,7 @@ function print_result() {
 }
 
 time {
-    install > /tmp/build/lastbuild.log 2>&1
+    install_flow > /tmp/build/lastbuild.log 2>&1
     RESULT=$?
     print_result $RESULT
     [ $RESULT -ne 0 ] && tail -n 10 /tmp/build/lastbuild.log

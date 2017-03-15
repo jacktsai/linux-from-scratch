@@ -87,4 +87,5 @@ install_pkg linux-headers \
 && install_pkg man-db \
 && install_pkg tar \
 && install_pkg texinfo \
-&& install_pkg vim
+&& install_pkg vim \
+&& install_pkg which

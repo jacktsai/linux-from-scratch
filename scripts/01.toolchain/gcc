@@ -55,5 +55,6 @@ function check_pkg() {
 function install_pkg() {
     make install \
     && ln -s gcc /tools/bin/cc \
+    && gcc -dumpspecs > `dirname $(gcc --print-libgcc-file-name)`/specs \
     && return 0 || return 1
 }

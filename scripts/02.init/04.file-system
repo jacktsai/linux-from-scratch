@@ -9,7 +9,6 @@ install -d -m 1777 /tmp /var/tmp
 ln -s /run /var/run
 ln -s /run/lock /var/lock
 ln -s /proc/self/mounts /etc/mtab
-ln -s /tools/bin/{bash,cat,echo,pwd,stty} /bin
 ln -s /tools/bin/perl /usr/bin
 ln -s /tools/lib/libgcc_s.so{,.1} /usr/lib
 ln -s /tools/lib/libstdc++.so{,.6} /usr/lib

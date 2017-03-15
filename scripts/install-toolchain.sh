@@ -57,4 +57,5 @@ install_pkg binutils-cross \
 && install_pkg texinfo \
 && install_pkg util-linux \
 && install_pkg xz \
-&& install_pkg zlib
+&& install_pkg zlib \
+&& install_pkg which

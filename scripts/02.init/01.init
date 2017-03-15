@@ -1,5 +1,5 @@
 #!/tools/bin/bash
-mkdir $LFS/{proc,sys,run,etc,root,lib64} 2> /dev/null
+mkdir $LFS/{proc,sys,run,etc,root,lib64,tmp} 2> /dev/null
 mkdir -p $LFS/{bin,sbin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,srv,var}
 mkdir -p $LFS/usr/{,local/}{bin,include,lib,sbin,src}
 mkdir -p $LFS/usr/{,local/}share/{color,dict,doc,info,locale,man/man{1..8},misc,terminfo,zoneinfo}
@@ -20,6 +20,7 @@ cp -r /tools/$(uname -m)-pc-linux-gnu/bin $LFS/tmp/$(uname -m)-pc-linux-gnu/
 echo "#!/tools/bin/bash
 export SHELL=/bin/bash
 export CLICOLOR=true
+alias ls='ls --color=auto'
 alias ll='ls -l'
 export PS1='\\e[42m[ \\u@\h: \\w ]\\e[m\\n\\$ '
 export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin
@@ -30,4 +31,7 @@ export CXXFLAGS='$CFLAGS'
 export MAKEOPTS='-j8'
 export MAKEFLAGS='-j8'" > $LFS/root/.bash_profile
 
+# 準備建構正式環境時的暫存資料夾
 mkdir -p $LFS/tmp/build 2> /dev/null
+
+ln -s /tools/bin/{bash,cat,echo,pwd,stty} $LFS/bin
