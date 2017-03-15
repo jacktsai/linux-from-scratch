@@ -21,6 +21,6 @@ function install_pkg() {
     && {
         mv /usr/bin/fuser   /bin
         mv /usr/bin/killall /bin
-    }
+    } \
     && return 0 || return 1
 }

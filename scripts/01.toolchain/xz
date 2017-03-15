@@ -21,8 +21,3 @@ function install_pkg() {
     make install \
     && return 0 || return 1
 }
-
-[ $(id -u) -eq 0 ] && {
-    echo "請不要使用 root 執行."
-    exit 1
-}

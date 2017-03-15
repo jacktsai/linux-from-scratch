@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'readline-7.0.tar.gz'; }
+function tar_dir() { echo 'readline-7.0'; }
 
 function config_pkg() {
     sed -i '/MV.*old/d' Makefile.in \
