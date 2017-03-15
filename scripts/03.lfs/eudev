@@ -8,7 +8,7 @@ function config_pkg() {
     echo "HAVE_BLKID=1
 BLKID_LIBS=\"-lblkid\"
 BLKID_CFLAGS=\"-I/tools/include\"" > config.cache
-    ./configure 
+    ./configure                     \
             --prefix=/usr           \
             --bindir=/sbin          \
             --sbindir=/sbin         \
@@ -19,7 +19,7 @@ BLKID_CFLAGS=\"-I/tools/include\"" > config.cache
             --with-rootlibdir=/lib  \
             --enable-manpages       \
             --disable-static        \
-            --config-cache
+            --config-cache          \
     && return 0 || return 1
 }
 
