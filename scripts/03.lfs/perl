@@ -31,6 +31,6 @@ function install_pkg() {
     make install \
     && {
         unset BUILD_ZLIB BUILD_BZIP2
-    }
+    } \
     && return 0 || return 1
 }
