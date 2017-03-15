@@ -67,25 +67,25 @@ install_pkg linux-headers \
 && install_pkg xz \
 && install_pkg kmod \
 && install_pkg gettext \
-&& install_pkg systemd \
-&& install_pkg procps-ng \
-&& install_pkg e2fsprogs \
-&& install_pkg coreutils \
-&& install_pkg diffutils \
-&& install_pkg gawk \
-&& install_pkg findutils \
-&& install_pkg groff \
-&& install_pkg less \
-&& install_pkg gzip \
-&& install_pkg iproute2 \
-&& install_pkg kbd \
-&& install_pkg libpipeline \
-&& install_pkg make \
-&& install_pkg patch \
-&& install_pkg d-bus \ 
-&& install_pkg util-linux \
-&& install_pkg man-db \
-&& install_pkg tar \
-&& install_pkg texinfo \
-&& install_pkg vim \
-&& install_pkg which
+&& install_pkg systemd #\
+# && install_pkg procps-ng \
+# && install_pkg e2fsprogs \
+# && install_pkg coreutils \
+# && install_pkg diffutils \
+# && install_pkg gawk \
+# && install_pkg findutils \
+# && install_pkg groff \
+# && install_pkg less \
+# && install_pkg gzip \
+# && install_pkg iproute2 \
+# && install_pkg kbd \
+# && install_pkg libpipeline \
+# && install_pkg make \
+# && install_pkg patch \
+# && install_pkg d-bus \
+# && install_pkg util-linux \
+# && install_pkg man-db \
+# && install_pkg tar \
+# && install_pkg texinfo \
+# && install_pkg vim \
+# && install_pkg which

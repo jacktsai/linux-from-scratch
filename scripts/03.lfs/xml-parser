@@ -13,7 +13,8 @@ function make_pkg() {
 }
 
 function check_pkg() {
-    return 0
+    make test \
+    && return 0 || return 1
 }
 
 function install_pkg() {

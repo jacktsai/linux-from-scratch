@@ -1,6 +1,6 @@
 #!/bin/bash
-function tar_name() { echo 'tar_name'; }
-function tar_dir() { echo 'tar_dir'; }
+function tar_name() { echo 'systemd-232.tar.xz'; }
+function tar_dir() { echo 'systemd-232'; }
 
 function config_pkg() {
     sed -i "s:blkid/::" $(grep -rl "blkid/blkid.h")
