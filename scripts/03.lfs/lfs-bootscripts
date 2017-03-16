@@ -1,0 +1,20 @@
+#!/bin/bash
+function tar_name() { echo 'lfs-bootscripts-20150222.tar.bz2'; }
+function tar_dir() { echo 'lfs-bootscripts-20150222'; }
+
+function config_pkg() {
+    return 0
+}
+
+function make_pkg() {
+    return 0
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

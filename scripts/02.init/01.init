@@ -1,6 +1,7 @@
 #!/tools/bin/bash
+# 建立基本根目錄結構
 mkdir $LFS/{proc,sys,run,etc,root,lib64,tmp} 2> /dev/null
-mkdir -p $LFS/{bin,sbin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,srv,var}
+mkdir -p $LFS/{bin,sbin,etc/{opt,sysconfig},home,lib/firmware,mnt,srv,var}
 mkdir -p $LFS/usr/{,local/}{bin,include,lib,sbin,src}
 mkdir -p $LFS/usr/{,local/}share/{color,dict,doc,info,locale,man/man{1..8},misc,terminfo,zoneinfo}
 mkdir -p $LFS/usr/libexec
@@ -9,12 +10,73 @@ mkdir -p $LFS/dev/pts 2> /dev/null
 mkdir -p $LFS/tools/{bin,config,scripts}
 mkdir -p $LFS/tools/lib/gcc/x86_64-pc-linux-gnu/6.3.0/
 mkdir -p $LFS/tools/x86_64-pc-linux-gnu/bin
-echo "8.0-systemd" > $LFS/etc/lfs-release
+
+# 連結基本執行檔
+ln -s /tools/bin/{bash,cat,echo,pwd,stty} $LFS/bin
 
 # 將 /tools/bin, /tools/$(uname -m)-pc-linux-gnu/bin 目錄複製一份到 /tmp 中，供之後可以修改時使用
 cp -r /tools/bin $LFS/tmp/bin
 mkdir -p $LFS/tmp/$(uname -m)-pc-linux-gnu 2> /dev/null
 cp -r /tools/$(uname -m)-pc-linux-gnu/bin $LFS/tmp/$(uname -m)-pc-linux-gnu/
+
+# 準備建構正式環境時的暫存資料夾
+mkdir -p $LFS/tmp/build 2> /dev/null
+
+# 準備 etc 資料夾的內容
+echo "8.0" > $LFS/etc/lfs-release
+echo "lfs-linux" > $LFS/etc/hostname
+cp /etc/resolv.conf $LFS/etc/
+echo "
+Welcome to Linux From Scratch 8.0
+
+                          by Jack
+" > $LFS/etc/issue
+ln -s /usr/share/zoneinfo/Asia/Taipei $LFS/etc/localtime
+echo "Asia/Taipei" > $LFS/etc/timezone
+echo "root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
+messagebus:x:18:18:D-Bus Message Daemon User:/var/run/dbus:/bin/false
+systemd-bus-proxy:x:72:72:systemd Bus Proxy:/:/bin/false
+systemd-journal-gateway:x:73:73:systemd Journal Gateway:/:/bin/false
+systemd-journal-remote:x:74:74:systemd Journal Remote:/:/bin/false
+systemd-journal-upload:x:75:75:systemd Journal Upload:/:/bin/false
+systemd-network:x:76:76:systemd Network Management:/:/bin/false
+systemd-resolve:x:77:77:systemd Resolver:/:/bin/false
+systemd-timesync:x:78:78:systemd Time Synchronization:/:/bin/false
+systemd-coredump:x:79:79:systemd Core Dumper:/:/bin/false
+nobody:x:99:99:Unprivileged User:/dev/null:/bin/false" > $LFS/etc/passwd
+echo "root:x:0:
+bin:x:1:daemon
+sys:x:2:
+kmem:x:3:
+tape:x:4:
+tty:x:5:
+daemon:x:6:
+floppy:x:7:
+disk:x:8:
+lp:x:9:
+dialout:x:10:
+audio:x:11:
+video:x:12:
+utmp:x:13:
+usb:x:14:
+cdrom:x:15:
+adm:x:16:
+messagebus:x:18:
+systemd-journal:x:23:
+input:x:24:
+mail:x:34:
+systemd-bus-proxy:x:72:
+systemd-journal-gateway:x:73:
+systemd-journal-remote:x:74:
+systemd-journal-upload:x:75:
+systemd-network:x:76:
+systemd-resolve:x:77:
+systemd-timesync:x:78:
+systemd-coredump:x:79:
+nogroup:x:99:
+users:x:999:" > $LFS/etc/group
 
 # 建立 root 的 .bash_profile
 echo "#!/tools/bin/bash
@@ -27,11 +89,6 @@ export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin
 stty cols 125 rows 45
 
 export CFLAGS='-march=native -O2 -pipe'
-export CXXFLAGS='$CFLAGS'
+export CXXFLAGS='\$CFLAGS'
 export MAKEOPTS='-j8'
 export MAKEFLAGS='-j8'" > $LFS/root/.bash_profile
-
-# 準備建構正式環境時的暫存資料夾
-mkdir -p $LFS/tmp/build 2> /dev/null
-
-ln -s /tools/bin/{bash,cat,echo,pwd,stty} $LFS/bin
