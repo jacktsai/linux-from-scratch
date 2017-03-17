@@ -1,0 +1,24 @@
+#!/bin/bash
+function tar_name() { echo 'dhcpcd-6.11.5.tar.xz'; }
+function tar_dir() { echo 'dhcpcd-6.11.5'; }
+
+function config_pkg() {
+    ./configure \
+            --libexecdir=/lib/dhcpcd \
+            --dbdir=/var/lib/dhcpcd \
+    && return 0 || return 1
+}
+
+function make_pkg() {
+    make -j8 \
+    && return 0 || return 1
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install \
+    && return 0 || return 1
+}

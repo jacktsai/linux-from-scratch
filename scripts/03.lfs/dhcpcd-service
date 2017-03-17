@@ -1,0 +1,20 @@
+#!/bin/bash
+function tar_name() { echo 'blfs-bootscripts-20170225.tar.xz'; }
+function tar_dir() { echo 'blfs-bootscripts-20170225'; }
+
+function config_pkg() {
+    return 0
+}
+
+function make_pkg() {
+    return 0
+}
+
+function check_pkg() {
+    return 0
+}
+
+function install_pkg() {
+    make install-service-dhcpcd \
+    && return 0 || return 1
+}

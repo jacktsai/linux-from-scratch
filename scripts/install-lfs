@@ -90,4 +90,6 @@ install_pkg linux-headers \
 && install_pkg texinfo \
 && install_pkg vim \
 && install_pkg which \
-&& install_pkg lfs-bootscripts
+&& install_pkg lfs-bootscripts \
+&& install_pkg dhcpcd \
+&& install_pkg dhcpcd-service
